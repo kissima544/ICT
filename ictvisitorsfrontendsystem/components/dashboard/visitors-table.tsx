@@ -106,7 +106,7 @@ export function VisitorsTable() {
       if (!res.ok) throw new Error("Failed to add visitor")
       const created: ApiVisitor = await res.json()
       setVisitors((prev) => [...prev, mapFromApi(created)])
-      toast.success("Visitor added successfully")
+    toast.success("Visitor added successfully")
     } catch (err) {
       console.error(err)
       toast.error("Error adding visitor")
@@ -125,8 +125,8 @@ export function VisitorsTable() {
       })
       if (!res.ok) throw new Error("Failed to update visitor")
       setVisitors((prev) => prev.map((v) => (v.id === updated.id ? updated : v)))
-      toast.success("Visitor updated successfully")
-      setEditingVisitor(null)
+    toast.success("Visitor updated successfully")
+    setEditingVisitor(null)
     } catch (err) {
       console.error(err)
       toast.error("Error updating visitor")
@@ -140,7 +140,7 @@ export function VisitorsTable() {
       })
       if (!res.ok) throw new Error("Failed to delete visitor")
       setVisitors((prev) => prev.filter((v) => v.id !== id))
-      toast.success("Visitor deleted")
+    toast.success("Visitor deleted")
     } catch (err) {
       console.error(err)
       toast.error("Error deleting visitor")
