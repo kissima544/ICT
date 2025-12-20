@@ -118,9 +118,9 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Enable Swagger only in development
-if (app.Environment.IsDevelopment())
-{
+// Enable Swagger in production for testing
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
@@ -128,7 +128,26 @@ if (app.Environment.IsDevelopment())
         // comment out RoutePrefix if you want Swagger at root
         // c.RoutePrefix = string.Empty;
     });
+// }
+
+// Automatically apply migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while upgrading the database.");
+    }
 }
+
+// Enable Developer Exception Page even in production for debugging (temporary)
+app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 

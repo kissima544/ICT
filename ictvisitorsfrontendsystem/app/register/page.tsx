@@ -12,7 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Users, Eye, EyeOff, Loader2, Check } from "lucide-react"
 import { toast } from "sonner"
 
-const API_BASE_URL = "https://localhost:7099/api"
+import { API_BASE_URL } from "@/lib/config"
+
 
 export default function RegisterPage() {
   const router = useRouter()

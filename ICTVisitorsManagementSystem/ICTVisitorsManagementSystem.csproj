@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DefaultItemExcludes>$(DefaultItemExcludes);ICTVisitorsManagementSystem\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +25,13 @@
     <PackageReference Include="Otp.NET" Version="1.4.0" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ICTVisitorsManagementSystem\**" />
+    <Content Remove="ICTVisitorsManagementSystem\**" />
+    <EmbeddedResource Remove="ICTVisitorsManagementSystem\**" />
+    <None Remove="ICTVisitorsManagementSystem\**" />
   </ItemGroup>
 
 </Project>

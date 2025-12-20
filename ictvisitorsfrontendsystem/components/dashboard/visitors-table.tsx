@@ -10,7 +10,8 @@ import { toast } from "sonner"
 import { VisitorModal } from "@/components/visitor-modal"
 
 
-const API_BASE_URL = "https://localhost:7099/api"
+import { API_BASE_URL } from "@/lib/config"
+
 
 // Shape returned by the backend (C# Visitor model)
 interface ApiVisitor {
@@ -106,7 +107,7 @@ export function VisitorsTable() {
       if (!res.ok) throw new Error("Failed to add visitor")
       const created: ApiVisitor = await res.json()
       setVisitors((prev) => [...prev, mapFromApi(created)])
-    toast.success("Visitor added successfully")
+      toast.success("Visitor added successfully")
     } catch (err) {
       console.error(err)
       toast.error("Error adding visitor")
@@ -125,8 +126,8 @@ export function VisitorsTable() {
       })
       if (!res.ok) throw new Error("Failed to update visitor")
       setVisitors((prev) => prev.map((v) => (v.id === updated.id ? updated : v)))
-    toast.success("Visitor updated successfully")
-    setEditingVisitor(null)
+      toast.success("Visitor updated successfully")
+      setEditingVisitor(null)
     } catch (err) {
       console.error(err)
       toast.error("Error updating visitor")
@@ -140,7 +141,7 @@ export function VisitorsTable() {
       })
       if (!res.ok) throw new Error("Failed to delete visitor")
       setVisitors((prev) => prev.filter((v) => v.id !== id))
-    toast.success("Visitor deleted")
+      toast.success("Visitor deleted")
     } catch (err) {
       console.error(err)
       toast.error("Error deleting visitor")
@@ -219,11 +220,11 @@ export function VisitorsTable() {
       // jspdf-autotable v5 extends jsPDF automatically when imported
       // But we need to ensure it's loaded before using
       const doc = new jsPDF("landscape", "mm", "a4")
-      
+
       // Verify autoTable is available
       if (!(doc as any).autoTable) {
         // Force load by accessing the module
-        ;(autoTableModule as any)
+        ; (autoTableModule as any)
         // Try again after a brief delay
         await new Promise((resolve) => setTimeout(resolve, 100))
       }
@@ -234,7 +235,7 @@ export function VisitorsTable() {
       // Header with styling
       doc.setFillColor(66, 139, 202)
       doc.rect(0, 0, pageWidth, 25, "F")
-      
+
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(20)
       doc.setFont("helvetica", "bold")
@@ -242,14 +243,14 @@ export function VisitorsTable() {
 
       doc.setFontSize(11)
       doc.setFont("helvetica", "normal")
-      doc.text(`Visitor Report - ${new Date().toLocaleDateString("en-US", { 
-        year: "numeric", 
-        month: "long", 
-        day: "numeric" 
+      doc.text(`Visitor Report - ${new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
       })}`, pageWidth / 2, 19, {
         align: "center",
       })
-      
+
       // Reset text color
       doc.setTextColor(0, 0, 0)
 
@@ -268,7 +269,7 @@ export function VisitorsTable() {
 
       // Use autoTable method
       if (typeof (doc as any).autoTable === "function") {
-        ;(doc as any).autoTable({
+        ; (doc as any).autoTable({
           head: [["Name", "Program", "Year", "Purpose", "Date", "Time In", "Time Out"]],
           body: tableData,
           startY: 32,
@@ -312,13 +313,13 @@ export function VisitorsTable() {
         let yPos = 32
         doc.setFontSize(10)
         doc.setFont("helvetica", "bold")
-        
+
         // Headers
         const headers = ["Name", "Program", "Year", "Purpose", "Date", "Time In", "Time Out"]
         const colWidths = [50, 45, 30, 50, 35, 30, 30]
         const startX = 12
         let xPos = startX
-        
+
         // Draw header row with styled background
         headers.forEach((header, i) => {
           // Draw header background rectangle
@@ -329,12 +330,12 @@ export function VisitorsTable() {
           doc.text(header, xPos + colWidths[i] / 2, yPos - 3, { align: "center" })
           xPos += colWidths[i]
         })
-        
+
         yPos += 2
         doc.setTextColor(50, 50, 50)
         doc.setFont("helvetica", "normal")
         doc.setFontSize(9)
-        
+
         // Data rows with styling
         tableData.forEach((row, rowIndex) => {
           // Check if we need a new page
@@ -357,9 +358,9 @@ export function VisitorsTable() {
             doc.setFont("helvetica", "normal")
             doc.setFontSize(9)
           }
-          
+
           xPos = startX
-          
+
           // Alternate row background for readability
           if (rowIndex % 2 === 0) {
             doc.setFillColor(250, 250, 250)
@@ -368,14 +369,14 @@ export function VisitorsTable() {
             doc.setFillColor(255, 255, 255)
             doc.rect(xPos, yPos - 7, colWidths.reduce((a, b) => a + b, 0), 7, "F")
           }
-          
+
           // Draw cell borders and text
           row.forEach((cell, i) => {
             // Draw cell border (subtle gray)
             doc.setDrawColor(220, 220, 220)
             doc.setLineWidth(0.1)
             doc.rect(xPos, yPos - 7, colWidths[i], 7, "S")
-            
+
             // Draw cell text (dark gray, left-aligned with padding)
             doc.setTextColor(50, 50, 50)
             const cellText = String(cell || "").substring(0, 28) // Truncate long text
@@ -384,7 +385,7 @@ export function VisitorsTable() {
             }
             xPos += colWidths[i]
           })
-          
+
           yPos += 8
         })
         finalY = yPos
@@ -394,14 +395,14 @@ export function VisitorsTable() {
       const footerY = finalY + 8
       doc.setFillColor(245, 245, 245)
       doc.rect(0, footerY, pageWidth, pageHeight - footerY, "F")
-      
+
       doc.setFontSize(9)
       doc.setFont("helvetica", "normal")
       doc.setTextColor(100, 100, 100)
-      
+
       // Left side: Total count
       doc.text(`Total Visitors: ${filteredVisitors.length}`, 12, footerY + 5)
-      
+
       // Right side: Generated date/time
       doc.text(
         `Generated: ${new Date().toLocaleString("en-US", {
@@ -415,7 +416,7 @@ export function VisitorsTable() {
         footerY + 5,
         { align: "right" },
       )
-      
+
       // Center: Page number (if multiple pages)
       const pageCount = doc.getNumberOfPages()
       for (let i = 1; i <= pageCount; i++) {

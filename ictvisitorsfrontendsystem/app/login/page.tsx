@@ -14,7 +14,11 @@ import { toast } from "sonner"
 import { OTPModal } from "@/components/otp-modal"
 import { ForgotPasswordModal } from "@/components/forgot-password-modal"
 
+import { API_BASE_URL } from "@/lib/config"
+
+/*
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+*/
 const GOOGLE_CLIENT_ID =
   process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
   "593848406993-vjp90tn3evm9rt5dpqhre1j3j3l53soa.apps.googleusercontent.com"

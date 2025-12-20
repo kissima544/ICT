@@ -17,7 +17,8 @@ import {
 } from "recharts"
 import { toast } from "sonner"
 
-const API_BASE_URL = "https://localhost:7099/api"
+import { API_BASE_URL } from "@/lib/config"
+
 
 interface ApiVisitor {
   id: number
