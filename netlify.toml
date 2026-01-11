@@ -1,0 +1,13 @@
+[build]
+  # The folder where the Next.js app lives
+  base = "ictvisitorsfrontendsystem Frontend"
+  # The command to build the Next.js app
+  command = "npm run build"
+  # The directory Netlify should serve
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
