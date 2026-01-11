@@ -13,6 +13,20 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Validate Critical Configuration
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString) || connectionString.Contains("YOUR_SQL_SERVER_CONNECTION_STRING"))
+{
+    Console.WriteLine("❌ ERROR: Connection String is missing or set to placeholder. Please update appsettings.json on the server.");
+}
+
+var jwtKey = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrEmpty(jwtKey) || jwtKey.Contains("YOUR_SUPER_SECURE_JWT_KEY"))
+{
+    Console.WriteLine("❌ ERROR: JWT Key is missing or set to placeholder. Please update appsettings.json on the server.");
+}
+
+
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -119,17 +133,15 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Enable Swagger only in development
-if (app.Environment.IsDevelopment())
+// Enable Swagger in all environments for debugging
+app.UseDeveloperExceptionPage(); 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ICT Visitors API v1");
-        // comment out RoutePrefix if you want Swagger at root
-        // c.RoutePrefix = string.Empty;
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ICT Visitors API v1");
+    c.RoutePrefix = "swagger"; 
+});
+
 
 app.UseHttpsRedirection();
 
@@ -143,7 +155,15 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     // Apply standard migrations
-    db.Database.Migrate();
+    try
+    {
+        db.Database.Migrate();
+        Console.WriteLine("✅ Database Migrations applied successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ ERROR: Database Migration failed: {ex.Message}");
+    }
 
     // Manual SQL migration for Visitor table changes (since EF CLI is unavailable)
     try 
