@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Users, UserCheck, UserX, Clock, TrendingUp, TrendingDown } from "lucide-react"
 import { toast } from "sonner"
 
-const API_BASE_URL = "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
 
 interface ApiVisitor {
   id: number
@@ -125,7 +125,7 @@ export function DashboardHome() {
         <p className="text-muted-foreground">Here's an overview of your visitor management system.</p>
       </div>
 
-        {/* Stats Grid (live from backend) */}
+      {/* Stats Grid (live from backend) */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <Card key={stat.title} className="border-border bg-card">
@@ -180,9 +180,8 @@ export function DashboardHome() {
                 <div className="text-right">
                   <p className="text-sm text-foreground">{visitor.time}</p>
                   <span
-                    className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                      visitor.status === "checked-in" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
-                    }`}
+                    className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${visitor.status === "checked-in" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
+                      }`}
                   >
                     {visitor.status === "checked-in" ? "Checked In" : "Checked Out"}
                   </span>
