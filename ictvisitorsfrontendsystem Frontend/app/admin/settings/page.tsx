@@ -11,7 +11,7 @@ import { Settings, Save, RefreshCw, Database, Bell, Shield, Globe, Clock, Loader
 import Link from "next/link"
 import { toast } from "sonner"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export default function SettingsPage() {
     const [isSaving, setIsSaving] = useState(false)

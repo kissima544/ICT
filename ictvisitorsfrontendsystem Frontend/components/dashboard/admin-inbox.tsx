@@ -9,7 +9,7 @@ import { Loader2, Send, Mail, User, Clock, CheckCircle2 } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export function AdminInbox() {
     const [messages, setMessages] = useState<any[]>([])

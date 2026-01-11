@@ -25,7 +25,7 @@ interface UserProfile {
   provider?: string
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export function DashboardHeader() {
   const router = useRouter()

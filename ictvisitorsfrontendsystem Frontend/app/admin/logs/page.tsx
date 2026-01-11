@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Shield, Search, Filter, Download, Calendar, User, Info, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react"
 import Link from "next/link"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 interface AuditLog {
     id: number
