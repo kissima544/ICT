@@ -40,17 +40,19 @@ export async function POST(req: Request) {
         // Get the last user message
         const lastMessage = messages[messages.length - 1].content
 
-        if (!process.env.GEMINI_API_KEY) {
+        const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+
+        if (!GEMINI_API_KEY) {
             return NextResponse.json(
                 {
                     role: "assistant",
-                    content: "I'm currently running in 'Offline Mode' because my AI brain (Gemini API Key) isn't connected yet! ✨ Please add a GEMINI_API_KEY to the system settings."
+                    content: "I'm currently running in 'Offline Mode' because my AI brain isn't connected to Netlify yet! ✨ Please add a GEMINI_API_KEY to your Netlify Environment Variables."
                 },
                 { status: 200 }
             )
         }
 
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
         // Use gemini-1.5-flash which is available in the free tier
         const model = genAI.getGenerativeModel({
             model: "gemini-1.5-flash",
