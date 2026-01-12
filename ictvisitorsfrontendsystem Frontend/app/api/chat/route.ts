@@ -51,9 +51,9 @@ export async function POST(req: Request) {
         }
 
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-        // Use gemini-2.5-flash which is available in the free tier
+        // Use gemini-1.5-flash which is available in the free tier
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
+            model: "gemini-1.5-flash",
         })
 
         // Provide context via system instruction equivalent (or prepended context)
