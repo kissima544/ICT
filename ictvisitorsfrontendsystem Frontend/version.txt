@@ -1,0 +1,3 @@
+Build Version: 1.0.1
+Timestamp: 2026-01-12T09:56:00Z
+Reason: Forcing Netlify build to apply localhost fixes.
