@@ -55,7 +55,7 @@ export async function POST(req: Request) {
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
         const model = genAI.getGenerativeModel({
             model: "gemini-1.5-flash",
-        }, { apiVersion: 'v1beta' })
+        })
 
         // Provide context via system instruction equivalent (or prepended context)
         const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`
