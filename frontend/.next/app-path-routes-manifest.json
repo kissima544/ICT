@@ -1,0 +1,14 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/logs/page": "/admin/logs",
+  "/admin/page": "/admin",
+  "/admin/security/page": "/admin/security",
+  "/admin/settings/page": "/admin/settings",
+  "/admin/users/page": "/admin/users",
+  "/api/chat/route": "/api/chat",
+  "/dashboard/page": "/dashboard",
+  "/login/page": "/login",
+  "/page": "/",
+  "/register/page": "/register"
+}
