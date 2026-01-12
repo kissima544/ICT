@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "sonner"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AiChatbot } from "@/components/ai-chatbot"
@@ -33,7 +32,6 @@ export default function RootLayout({
           {children}
           <AiChatbot />
           <Toaster position="top-right" richColors />
-          <Analytics />
         </ThemeProvider>
       </body>
     </html>

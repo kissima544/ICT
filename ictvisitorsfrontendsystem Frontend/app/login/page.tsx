@@ -23,6 +23,12 @@ const FACEBOOK_APP_ID = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || "879635468332
 const TIKTOK_CLIENT_KEY = process.env.NEXT_PUBLIC_TIKTOK_CLIENT_KEY || "sbaw5trug31elajtai"
 
 // PKCE Helper Functions
+useEffect(() => {
+  console.log("🚀 [DEPLOYMENT DEBUG] API_BASE_URL:", API_BASE_URL);
+  if (!API_BASE_URL) {
+    console.warn("⚠️ [DEPLOYMENT WARNING] NEXT_PUBLIC_API_BASE_URL is not defined in the environment!");
+  }
+}, [])
 async function sha256(plain: string) {
   const encoder = new TextEncoder();
   const data = encoder.encode(plain);
