@@ -53,9 +53,8 @@ export async function POST(req: Request) {
         }
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
-        // Switch to v1beta and use the -latest suffix for better compatibility
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash-latest",
+            model: "gemini-1.5-flash",
         }, { apiVersion: 'v1beta' })
 
         // Provide context via system instruction equivalent (or prepended context)
@@ -67,13 +66,11 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ role: "assistant", content: text })
     } catch (error: any) {
-        const key = process.env.GEMINI_API_KEY || ""
-        const maskedKey = key.length > 8 ? `${key.substring(0, 4)}...${key.substring(key.length - 4)}` : "too-short"
         console.error("Gemini Error:", error)
         return NextResponse.json(
             {
                 role: "assistant",
-                content: `I encountered an error: ${error?.message || 'Unknown error'}. [Debug Info: Key=${maskedKey}]. Please check your API key in Netlify settings. 😓`
+                content: `I encountered an error: ${error?.message || 'Unknown error'}. Please check your API key or try again later. 😓`
             },
             { status: 200 }
         )
