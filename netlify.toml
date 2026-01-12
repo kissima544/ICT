@@ -1,6 +1,6 @@
 [build]
   # Forcing Netlify to ignore cache and rebuild
-  base = "ictvisitorsfrontendsystem Frontend"
+  base = "frontend"
   command = "npm run build"
   publish = ".next"
 
