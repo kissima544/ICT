@@ -12,7 +12,7 @@ import { QRGenerator } from "@/components/qr-generator"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 interface ApiVisitor {
   id: number

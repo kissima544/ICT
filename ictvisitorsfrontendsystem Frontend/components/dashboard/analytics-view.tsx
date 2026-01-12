@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { ArrowUp, ArrowDown, Users, Clock, Activity, Star, Smile } from "lucide-react"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export function AnalyticsView() {
     const [data, setData] = useState<any[]>([])

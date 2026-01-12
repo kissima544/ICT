@@ -13,7 +13,7 @@ import { QRCodeSVG } from "qrcode.react"
 import { toPng } from "html-to-image"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export function StudentDashboard() {
     const [isLoading, setIsLoading] = useState(true)

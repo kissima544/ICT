@@ -17,7 +17,7 @@ import {
 } from "recharts"
 import { toast } from "sonner"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7099/api"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 interface ApiVisitor {
   id: number
