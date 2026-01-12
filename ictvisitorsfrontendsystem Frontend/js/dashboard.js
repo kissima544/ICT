@@ -1,5 +1,5 @@
 // Updated dashboard.js with time formatting fix and full visitor management functionality
-const API_BASE_URL = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE_URL ? process.env.NEXT_PUBLIC_API_BASE_URL : "https://localhost:7099/api";
+const API_BASE_URL = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE_URL ? process.env.NEXT_PUBLIC_API_BASE_URL : "https://ictvisitors.runasp.net/api";
 
 // Sidebar and Tabs
 const tabs = document.querySelectorAll('.sidebar-menu li');

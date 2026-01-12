@@ -1,4 +1,4 @@
-const API_BASE_URL = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE_URL ? process.env.NEXT_PUBLIC_API_BASE_URL : "https://localhost:7099/api";
+const API_BASE_URL = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE_URL ? process.env.NEXT_PUBLIC_API_BASE_URL : "https://ictvisitors.runasp.net/api";
 
 const login = async () => {
   const email = document.getElementById("login-email").value;
