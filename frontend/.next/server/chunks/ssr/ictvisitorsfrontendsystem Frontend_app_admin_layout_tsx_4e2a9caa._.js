@@ -1,3 +1,0 @@
-module.exports=[71095,a=>{"use strict";var b=a.i(12349),c=a.i(7827),d=a.i(4051);function e({children:a}){let e=(0,d.useRouter)(),[f,g]=(0,c.useState)(null);return((0,c.useEffect)(()=>{},[e]),null===f)?(0,b.jsx)("div",{className:"flex min-h-screen items-center justify-center bg-background",children:(0,b.jsx)("div",{className:"h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"})}):!1===f?null:(0,b.jsx)(b.Fragment,{children:a})}a.s(["default",()=>e])}];
-
-//# sourceMappingURL=ictvisitorsfrontendsystem%20Frontend_app_admin_layout_tsx_4e2a9caa._.js.map

@@ -1,14 +1,17 @@
 # Dependencies
 node_modules/
-ictvisitorsfrontendsystem Frontend/node_modules/
-ictvisitorsfrontendsystem Frontend/.next/
-ictvisitorsfrontendsystem Frontend/.pnpm-store/
-ictvisitorsfrontendsystem Frontend/pnpm-lock.yaml
+frontend/node_modules/
+frontend/.next/
+frontend/.pnpm-store/
+frontend/pnpm-lock.yaml
 
 # Build outputs
-ictvisitorsfrontendsystem Frontend/.next/
-ictvisitorsfrontendsystem Frontend/out/
-ictvisitorsfrontendsystem Frontend/dist/
+frontend/.next/
+frontend/out/
+frontend/dist/
+.next/
+out/
+dist/
 ICTVisitorsManagementSystem Backend/**/bin/
 ICTVisitorsManagementSystem Backend/**/obj/
 ICTVisitorsManagementSystem Backend/**/Debug/
@@ -20,7 +23,7 @@ ICTVisitorsManagementSystem Backend/**/Release/
 .env.development.local
 .env.test.local
 .env.production.local
-ictvisitorsfrontendsystem Frontend/.env*
+frontend/.env*
 
 # IDE
 .vscode/
@@ -48,7 +51,6 @@ coverage/
 
 # OS
 Thumbs.db
-.DS_Store
 
 # .NET
 ICTVisitorsManagementSystem Backend/**/appsettings.Development.json
@@ -56,7 +58,6 @@ ICTVisitorsManagementSystem Backend/**/appsettings.Production.json
 *.user
 *.suo
 *.cache
-
 
 # Build artifacts
 publish/
