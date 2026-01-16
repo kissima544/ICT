@@ -56,12 +56,13 @@ export async function POST(req: Request) {
         const genAI = new GoogleGenerativeAI(cleanKey);
         const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`;
 
-        // FINAL PRESENTATION FALLBACK: High-compatibility model strings for v1beta
+        // FINAL PRESENTATION FALLBACK: Exhaustive list of model IDs and versions
         const attempts = [
-            { name: "gemini-1.5-flash", version: "v1beta" },
-            { name: "gemini-1.5-flash-latest", version: "v1beta" },
-            { name: "gemini-1.5-pro", version: "v1beta" },
-            { name: "gemini-pro", version: "v1beta" }
+            { name: "models/gemini-1.5-flash", version: "v1beta" },
+            { name: "models/gemini-1.5-flash-8b", version: "v1beta" },
+            { name: "gemini-1.5-flash", version: "v1" },
+            { name: "models/gemini-1.5-pro", version: "v1beta" },
+            { name: "models/gemini-1.0-pro", version: "v1beta" }
         ];
 
         let text = "";
@@ -93,7 +94,7 @@ export async function POST(req: Request) {
         return NextResponse.json(
             {
                 role: "assistant",
-                content: `Error: ${error?.message || 'Unknown error'}. [Final-Diagnostic]. Key=${maskedKey}. IMPORTANT: Search for "Generative Language API" (NOT Gemini API) in Google Cloud and click ENABLE. 😓`
+                content: `Error: ${error?.message || 'Unknown error'}. [Final-Diagnostic-v4]. Key=${maskedKey}. Status: Project Enabled. Retrying with specific model IDs... 😓`
             },
             { status: 200 }
         )
