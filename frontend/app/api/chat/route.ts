@@ -52,37 +52,48 @@ export async function POST(req: Request) {
             )
         }
 
-        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
-        const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`
+        const genAI_v1 = new GoogleGenerativeAI(GEMINI_API_KEY);
+        const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`;
 
-        // Fallback mechanism to ensure the bot works for your presentation!
-        const modelNames = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"]
-        let text = ""
-        let lastError = null
+        // ULTIMATE FALLBACK: Try both v1 and v1beta, and multiple model strings
+        const attempts = [
+            { name: "gemini-1.5-flash", version: "v1" },
+            { name: "gemini-1.5-flash", version: "v1beta" },
+            { name: "gemini-2.0-flash-exp", version: "v1beta" },
+            { name: "gemini-1.5-pro", version: "v1beta" },
+            { name: "gemini-pro", version: "v1" }
+        ];
 
-        for (const modelName of modelNames) {
+        let text = "";
+        let lastError: any = null;
+
+        for (const attempt of attempts) {
             try {
-                const model = genAI.getGenerativeModel({ model: modelName })
-                const result = await model.generateContent(prompt)
-                text = result.response.text()
-                if (text) break; // Success!
+                const client = new GoogleGenerativeAI(GEMINI_API_KEY);
+                const model = client.getGenerativeModel({ model: attempt.name }, { apiVersion: attempt.version as any });
+                const result = await model.generateContent(prompt);
+                text = result.response.text();
+                if (text) break;
             } catch (err: any) {
-                console.warn(`Model ${modelName} failed:`, err.message)
-                lastError = err
+                console.warn(`Attempt ${attempt.name} (${attempt.version}) failed:`, err.message);
+                lastError = err;
             }
         }
 
         if (!text && lastError) {
-            throw lastError // If all fail, throw the last error
+            throw lastError;
         }
 
         return NextResponse.json({ role: "assistant", content: text })
     } catch (error: any) {
+        const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "";
+        const maskedKey = key.length > 8 ? `${key.substring(0, 4)}...${key.substring(key.length - 4)}` : "not-found";
+
         console.error("Gemini Error:", error)
         return NextResponse.json(
             {
                 role: "assistant",
-                content: `I encountered an error: ${error?.message || 'Unknown error'}. Please check your API key or try again later. 😓`
+                content: `Error: ${error?.message || 'Unknown error'}. [Model-Internal-404]. Key=${maskedKey}. Please verify "Generative Language API" is ENABLED in Google Cloud Console. 😓`
             },
             { status: 200 }
         )
