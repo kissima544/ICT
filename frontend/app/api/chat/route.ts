@@ -52,16 +52,17 @@ export async function POST(req: Request) {
             )
         }
 
-        const genAI_v1 = new GoogleGenerativeAI(GEMINI_API_KEY);
+        const cleanKey = GEMINI_API_KEY.trim();
+        const genAI = new GoogleGenerativeAI(cleanKey);
         const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`;
 
-        // ULTIMATE FALLBACK: Try both v1 and v1beta, and multiple model strings
+        // FINAL PRESENTATION FALLBACK: Extremely resilient model selection
         const attempts = [
             { name: "gemini-1.5-flash", version: "v1" },
-            { name: "gemini-1.5-flash", version: "v1beta" },
-            { name: "gemini-2.0-flash-exp", version: "v1beta" },
-            { name: "gemini-1.5-pro", version: "v1beta" },
-            { name: "gemini-pro", version: "v1" }
+            { name: "models/gemini-1.5-flash", version: "v1" },
+            { name: "gemini-1.5-pro", version: "v1" },
+            { name: "gemini-1.5-flash-latest", version: "v1beta" },
+            { name: "gemini-pro", version: "v1beta" }
         ];
 
         let text = "";
@@ -69,13 +70,13 @@ export async function POST(req: Request) {
 
         for (const attempt of attempts) {
             try {
-                const client = new GoogleGenerativeAI(GEMINI_API_KEY);
-                const model = client.getGenerativeModel({ model: attempt.name }, { apiVersion: attempt.version as any });
+                const model = genAI.getGenerativeModel({ model: attempt.name }, { apiVersion: attempt.version as any });
                 const result = await model.generateContent(prompt);
-                text = result.response.text();
+                const response = await result.response;
+                text = response.text();
                 if (text) break;
             } catch (err: any) {
-                console.warn(`Attempt ${attempt.name} (${attempt.version}) failed:`, err.message);
+                console.warn(`Attempt ${attempt.name} failed:`, err.message);
                 lastError = err;
             }
         }
@@ -86,7 +87,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ role: "assistant", content: text })
     } catch (error: any) {
-        const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "";
+        const key = (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "").trim();
         const maskedKey = key.length > 8 ? `${key.substring(0, 4)}...${key.substring(key.length - 4)}` : "not-found";
 
         console.error("Gemini Error:", error)
