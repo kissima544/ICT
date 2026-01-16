@@ -56,12 +56,11 @@ export async function POST(req: Request) {
         const genAI = new GoogleGenerativeAI(cleanKey);
         const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`;
 
-        // FINAL PRESENTATION FALLBACK: Extremely resilient model selection
+        // FINAL PRESENTATION FALLBACK: High-compatibility model strings for v1beta
         const attempts = [
-            { name: "gemini-1.5-flash", version: "v1" },
-            { name: "models/gemini-1.5-flash", version: "v1" },
-            { name: "gemini-1.5-pro", version: "v1" },
+            { name: "gemini-1.5-flash", version: "v1beta" },
             { name: "gemini-1.5-flash-latest", version: "v1beta" },
+            { name: "gemini-1.5-pro", version: "v1beta" },
             { name: "gemini-pro", version: "v1beta" }
         ];
 
@@ -94,7 +93,7 @@ export async function POST(req: Request) {
         return NextResponse.json(
             {
                 role: "assistant",
-                content: `Error: ${error?.message || 'Unknown error'}. [Model-Internal-404]. Key=${maskedKey}. Please verify "Generative Language API" is ENABLED in Google Cloud Console. 😓`
+                content: `Error: ${error?.message || 'Unknown error'}. [Final-Diagnostic]. Key=${maskedKey}. IMPORTANT: Search for "Generative Language API" (NOT Gemini API) in Google Cloud and click ENABLE. 😓`
             },
             { status: 200 }
         )
