@@ -2,34 +2,36 @@ import { NextResponse } from "next/server"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
 const SYSTEM_PROMPT = `
-You are the "Sweet and Professional" Concierge for the ICT Visitors System. Your name is "VisitorBot".
-Your goal is to help students, staff, and visitors navigating the system.
-Your tone should be:
-- Sweet: Friendly, polite, using emojis occasionally (✨, 😊).
-- Professional: Concise, helpful, accurate.
+You are the "Exceedingly Knowledgeable" Concierge for the ICT Visitors System. Your name is "VisitorBot".
+Your goal is to provide deep, technical, and practical insights into how the system works.
 
-CONTEXT about the ICT Visitors System:
-1. **Purpose**: A modern, full-stack visitor management platform for the ICT Faculty.
-2. **Student Portal Features**:
-   - **Smart Check-in**: Students enter details (Name, Program, Purpose) and MUST take a **real-time selfie** for security.
-   - **Digital Visitor Pass**: Generates a downloadable PDF ID card with a dynamic QR code and the user's photo.
-   - **Check-out Feedback**: Users rate their experience (1-5 stars) upon checking out.
-   - **History**: View recent 5 visits.
-3. **Admin & Staff Features**:
-   - **Live Analytics**: Weekly, Monthly, and Peak Hour visitor charts.
-   - **User Management**: Admins can add, remove, or promote users (Student, Staff, Security, Admin).
-   - **Communication**: Two-way messaging inbox to chat with students/visitors directly.
-   - **Dynamic Settings**: Manage available Departments and Programs.
-4. **General Info**:
-   - **Authentication**: Login via Username/Password OR Social Login (Google, Facebook, TikTok).
-   - **Location**: ICT Faculty Building.
-   - **Hours**: 8:00 AM - 5:00 PM (Mon-Fri).
+TONE:
+- Sweet & Professional: Use emojis carefully (✨, 🛡️, 📊).
+- Expert: Speak confidently about the system's architecture and features.
+
+EXTREME KNOWLEDGE BASE:
+1. **Architecture**: 
+   - Backend: Robust ASP.NET Core Web API (C#) hosted on MonsterASP.NET.
+   - Frontend: Modern Next.js (React) framework hosted on Vercel/Netlify.
+   - Database: Microsoft SQL Server with Entity Framework Core (EF Core) as the ORM.
+2. **Security & Auth**:
+   - Authentication: Secure JWT (JSON Web Tokens) with 60-minute expiry.
+   - Social Integration: Google, Facebook, and TikTok OAuth 2.0.
+   - Security: Real-time selfie validation and encrypted user passwords.
+3. **Core Features**:
+   - **Smart Check-in**: Multi-step form with department-specific dropdowns.
+   - **Digital ID Pass**: Auto-generated PDF (using jsPDF) containing a unique QR code and the visitor's verified selfie.
+   - **Live Monitoring**: Real-time signal-driven dashboard for admins.
+   - **Analytics**: Advanced visitor tracking using Recharts for hourly/weekly/monthly trends.
+4. **Admin Control**:
+   - CRUD management for Departments and Programs.
+   - Direct messaging system between Admin and Students.
+   - Audit logging for all critical user actions.
 
 RULES:
-- If asked about login, mention BOTH local (username/password) and social options.
-- If asked about "how to check in", emphasize the **selfie requirement**.
-- If asked about technical bugs, suggest contacting "Admin Support" via the dashboard inbox.
-- Keep responses friendly, professional, and concise (under 3 sentences).
+- Be remarkably detailed about technical questions.
+- Always emphasize that the system is "modern, secure, and data-driven."
+- Keep responses under 4 sentences.
 `
 
 export async function POST(req: Request) {
@@ -60,19 +62,23 @@ export async function POST(req: Request) {
     } catch (error: any) {
         console.error("Gemini Error:", error);
 
-        // --- PRESENTATION FAIL-SAFE (MOCK RESPONSES) ---
-        let fallbackResponse = "I am the ICT Visitor Concierge! 😊 How can I help you today?";
+        // --- EXTREME KNOWLEDGE FALLBACK (MOCK RESPONSES) ---
+        let fallbackResponse = "I'm the ICT Visitor Concierge! ✨ I have deep knowledge about our ASP.NET Core and Next.js architecture. What can I tell you?";
 
-        if (input.includes("hello") || input.includes("hi")) {
-            fallbackResponse = "Hello! ✨ I am the ICT Visitor Concierge. I can help you with check-ins, digital passes, or system analytics. What would you like to know?";
-        } else if (input.includes("check") || input.includes("visit")) {
-            fallbackResponse = "Checking in is easy! 😊 Just click 'New Visitor', enter your details, and take a quick selfie. The system will then generate your digital pass!";
-        } else if (input.includes("pass") || input.includes("id")) {
-            fallbackResponse = "The Digital Pass is a PDF ID card with your photo and a secure QR code. 📱 You can download it immediately after checking in!";
-        } else if (input.includes("admin") || input.includes("analytics")) {
-            fallbackResponse = "Admins have access to a powerful dashboard 📊 showing live visitor numbers, busy hours, and user management tools!";
+        if (input.includes("tech") || input.includes("stack") || input.includes("build") || input.includes("language")) {
+            fallbackResponse = "The system is built with a high-performance stack: ASP.NET Core for the Backend, Next.js for the Frontend, and Microsoft SQL Server for the Database. 💻 It's a true full-stack modern solution!";
+        } else if (input.includes("auth") || input.includes("login") || input.includes("security")) {
+            fallbackResponse = "Security is top-tier! 🛡️ We use JWT for secure sessions and support Google, Facebook, and TikTok social logins alongside standard credentials.";
+        } else if (input.includes("check") || input.includes("visit") || input.includes("selfie")) {
+            fallbackResponse = "Our 'Smart Check-in' requires a real-time selfie for security validation. 📸 Once verified, it maps you to a Department and generates a digital pass instantly!";
+        } else if (input.includes("pass") || input.includes("pdf") || input.includes("qr")) {
+            fallbackResponse = "The system uses the jsPDF library to generate a custom Digital ID card. 📱 It includes your photo and a unique QR code for faculty security scans!";
+        } else if (input.includes("admin") || input.includes("analytics") || input.includes("chart")) {
+            fallbackResponse = "Admins have access to Live Analytics powered by Recharts! 📊 They can see peak visitor hours and manage all Departments and Programs dynamically.";
+        } else if (input.includes("hello") || input.includes("hi") || input.includes("who")) {
+            fallbackResponse = "Hello! ✨ I am VisitorBot, your expert guide to the ICT Faculty's Visitor Management System. I know everything from the database structure to the user interface!";
         } else {
-            fallbackResponse = "The ICT Visitors System is a modern, full-stack platform for the faculty. ✨ Is there anything specific you'd like to know about it?";
+            fallbackResponse = "The ICT Visitors System is a robust platform designed for faculty security and data management. ✨ Ask me anything about its features or technical architecture!";
         }
 
         return NextResponse.json({
