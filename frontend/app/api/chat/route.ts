@@ -53,16 +53,28 @@ export async function POST(req: Request) {
         }
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
-        const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
-        })
-
-        // Provide context via system instruction equivalent (or prepended context)
         const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`
 
-        const result = await model.generateContent(prompt)
-        const response = result.response
-        const text = response.text()
+        // Fallback mechanism to ensure the bot works for your presentation!
+        const modelNames = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"]
+        let text = ""
+        let lastError = null
+
+        for (const modelName of modelNames) {
+            try {
+                const model = genAI.getGenerativeModel({ model: modelName })
+                const result = await model.generateContent(prompt)
+                text = result.response.text()
+                if (text) break; // Success!
+            } catch (err: any) {
+                console.warn(`Model ${modelName} failed:`, err.message)
+                lastError = err
+            }
+        }
+
+        if (!text && lastError) {
+            throw lastError // If all fail, throw the last error
+        }
 
         return NextResponse.json({ role: "assistant", content: text })
     } catch (error: any) {
