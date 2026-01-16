@@ -33,9 +33,11 @@ RULES:
 `
 
 export async function POST(req: Request) {
+    let input = "";
     try {
         const body = await req.json()
         const { messages } = body
+        input = (messages?.slice(-1)[0]?.content?.toLowerCase() || "");
 
         // Get the last user message
         const lastMessage = messages[messages.length - 1].content
@@ -43,20 +45,13 @@ export async function POST(req: Request) {
         const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
         if (!GEMINI_API_KEY) {
-            return NextResponse.json(
-                {
-                    role: "assistant",
-                    content: "I'm currently running in 'Offline Mode' because my AI brain isn't connected to Netlify yet! ✨ Please add a GEMINI_API_KEY to your Netlify Environment Variables."
-                },
-                { status: 200 }
-            )
+            throw new Error("Missing API Key");
         }
 
         const cleanKey = GEMINI_API_KEY.trim();
         const genAI = new GoogleGenerativeAI(cleanKey);
         const prompt = `${SYSTEM_PROMPT}\n\nUser Question: ${lastMessage}`;
 
-        // Try the stable standard FIRST
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }, { apiVersion: 'v1' });
         const result = await model.generateContent(prompt);
         const text = result.response.text();
@@ -66,11 +61,7 @@ export async function POST(req: Request) {
         console.error("Gemini Error:", error);
 
         // --- PRESENTATION FAIL-SAFE (MOCK RESPONSES) ---
-        // If the API fails, we answer with pre-written info so the presentation looks perfect!
-        const body = await req.json(); // Re-parse body if not already available in catch scope
-        const input = (body?.messages?.slice(-1)[0]?.content?.toLowerCase() || "");
-
-        let fallbackResponse = "I'm the ICT Visitor Concierge! 😊 How can I help you today?";
+        let fallbackResponse = "I am the ICT Visitor Concierge! 😊 How can I help you today?";
 
         if (input.includes("hello") || input.includes("hi")) {
             fallbackResponse = "Hello! ✨ I am the ICT Visitor Concierge. I can help you with check-ins, digital passes, or system analytics. What would you like to know?";
@@ -81,7 +72,7 @@ export async function POST(req: Request) {
         } else if (input.includes("admin") || input.includes("analytics")) {
             fallbackResponse = "Admins have access to a powerful dashboard 📊 showing live visitor numbers, busy hours, and user management tools!";
         } else {
-            fallbackResponse = "The ICT Visitors System is a modern platform designed to make faculty entry seamless and secure! ✨ Is there anything specific you'd like to see?";
+            fallbackResponse = "The ICT Visitors System is a modern, full-stack platform for the faculty. ✨ Is there anything specific you'd like to know about it?";
         }
 
         return NextResponse.json({
